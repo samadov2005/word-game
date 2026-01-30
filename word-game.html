@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WordPlay - English Party Game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B9D;
+            --secondary: #4ECDC4;
+            --accent: #FFE66D;
+            --dark: #1A1A2E;
+            --light: #F8F9FA;
+            --gray: #6C757D;
+            --success: #52C493;
+            --shadow: rgba(26, 26, 46, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            position: relative;
+            z-index: 1;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .logo {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            animation: fadeIn 0.8s ease-out 0.2s both;
+        }
+
+        .tagline {
+            color: var(--gray);
+            font-size: 1.1rem;
+            animation: fadeIn 0.8s ease-out 0.4s both;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 16px;
+            animation: fadeIn 0.8s ease-out 0.6s both;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        .stat-value {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .difficulty-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .difficulty-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .difficulty-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 20px 30px;
+            border: 3px solid transparent;
+            border-radius: 16px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .difficulty-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .difficulty-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .difficulty-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .difficulty-btn.easy {
+            background: linear-gradient(135deg, #52C493, #3AA876);
+            color: white;
+        }
+
+        .difficulty-btn.medium {
+            background: linear-gradient(135deg, #FFE66D, #FFC93C);
+            color: var(--dark);
+        }
+
+        .difficulty-btn.hard {
+            background: linear-gradient(135deg, #FF6B9D, #E74C7C);
+            color: white;
+        }
+
+        .difficulty-btn.active {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .difficulty-btn.easy.active {
+            border-color: #52C493;
+        }
+
+        .difficulty-btn.medium.active {
+            border-color: #FFE66D;
+        }
+
+        .difficulty-btn.hard.active {
+            border-color: #FF6B9D;
+        }
+
+        .game-area {
+            margin-top: 30px;
+            display: none;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .game-area.active {
+            display: block;
+        }
+
+        .get-word-btn {
+            width: 100%;
+            padding: 25px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 30px rgba(255, 107, 157, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .get-word-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .get-word-btn:hover::before {
+            left: 100%;
+        }
+
+        .get-word-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(255, 107, 157, 0.4);
+        }
+
+        .get-word-btn:active {
+            transform: translateY(0);
+        }
+
+        .get-word-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .word-display {
+            margin-top: 30px;
+            padding: 40px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 20px;
+            text-align: center;
+            display: none;
+            animation: scaleIn 0.5s ease-out;
+            border: 3px solid var(--accent);
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .word-display.show {
+            display: block;
+        }
+
+        .current-word {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .word-type {
+            font-size: 1rem;
+            color: var(--gray);
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+
+        .hints-container {
+            margin-top: 30px;
+            display: none;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hints-container.show {
+            display: block;
+        }
+
+        .hints-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.3rem;
+            color: var(--dark);
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .hint {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border-left: 4px solid var(--secondary);
+            animation: slideRight 0.5s ease-out both;
+            box-shadow: 0 2px 10px var(--shadow);
+        }
+
+        .hint:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .hint:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        .hint:nth-child(4) {
+            animation-delay: 0.3s;
+        }
+
+        .hint:nth-child(5) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes slideRight {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .hint-icon {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background: var(--secondary);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        .hint-text {
+            color: var(--dark);
+            font-size: 1rem;
+            line-height: 1.6;
+            display: inline;
+        }
+
+        .timer-container {
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .timer-container.show {
+            display: block;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .timer {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px var(--shadow);
+        }
+
+        .timer-icon {
+            font-size: 1.5rem;
+        }
+
+        .timer-value {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            min-width: 60px;
+        }
+
+        .timer-value.warning {
+            color: #ff6b6b;
+            animation: pulse 0.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .action-buttons.show {
+            display: flex;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .next-btn, .stop-timer-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .next-btn {
+            background: linear-gradient(135deg, var(--success), #3AA876);
+            color: white;
+            box-shadow: 0 5px 15px rgba(82, 196, 147, 0.3);
+        }
+
+        .next-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(82, 196, 147, 0.4);
+        }
+
+        .stop-timer-btn {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            color: var(--dark);
+            box-shadow: 0 5px 15px var(--shadow);
+        }
+
+        .stop-timer-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px var(--shadow);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+                border-radius: 24px;
+            }
+
+            .logo {
+                font-size: 2.2rem;
+            }
+
+            .tagline {
+                font-size: 1rem;
+            }
+
+            .stats-bar {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .difficulty-buttons {
+                flex-direction: column;
+            }
+
+            .difficulty-btn {
+                min-width: 100%;
+            }
+
+            .current-word {
+                font-size: 2rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            position: absolute;
+            animation: confetti-fall 3s linear;
+            z-index: 1000;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .sound-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border: 2px solid var(--secondary);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.3rem;
+            box-shadow: 0 4px 15px var(--shadow);
+        }
+
+        .sound-toggle:hover {
+            transform: scale(1.1);
+            background: var(--secondary);
+            color: white;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e9ecef;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sound-toggle" id="soundToggle" title="Toggle Sound">🔊</div>
+        
+        <div class="header">
+            <h1 class="logo">WordPlay</h1>
+            <p class="tagline">Learn English Through Fun Word Explanation Game</p>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat">
+                <div class="stat-label">Round</div>
+                <div class="stat-value" id="roundCount">1</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Score</div>
+                <div class="stat-value" id="scoreCount">0</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Level</div>
+                <div class="stat-value" id="levelDisplay">-</div>
+            </div>
+        </div>
+
+        <div class="difficulty-section">
+            <h2 class="section-title">Choose Your Challenge</h2>
+            <div class="difficulty-buttons">
+                <button class="difficulty-btn easy" data-level="easy">
+                    <span>🟢 Easy</span>
+                </button>
+                <button class="difficulty-btn medium" data-level="medium">
+                    <span>🟡 Medium</span>
+                </button>
+                <button class="difficulty-btn hard" data-level="hard">
+                    <span>🔴 Hard</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="game-area" id="gameArea">
+            <button class="get-word-btn" id="getWordBtn">
+                🎯 Get Random Word
+            </button>
+
+            <div class="word-display" id="wordDisplay">
+                <div class="current-word" id="currentWord"></div>
+                <div class="word-type" id="wordType"></div>
+                
+                <div class="timer-container" id="timerContainer">
+                    <div class="timer">
+                        <span class="timer-icon">⏱️</span>
+                        <span class="timer-value" id="timerValue">60</span>
+                    </div>
+                </div>
+
+                <div class="hints-container" id="hintsContainer">
+                    <h3 class="hints-title">💡 Hints to Help You Explain:</h3>
+                    <div id="hintsList"></div>
+                </div>
+
+                <div class="action-buttons" id="actionButtons">
+                    <button class="stop-timer-btn" id="stopTimerBtn">⏸️ Stop Timer</button>
+                    <button class="next-btn" id="nextBtn">➡️ Next Word</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            Built for learning, by Avazbek Samadov
+        </div>
+    </div>
+
+    <script>
+        // Word Database - 200+ words per difficulty level
+        const wordDatabase = {
+            easy: [
+                { word: "Apple", type: "noun", hints: ["It's a fruit that grows on trees", "It can be red, green, or yellow", "People say: 'An ___ a day keeps the doctor away'", "Not an orange or banana"] },
+                { word: "Happy", type: "adjective", hints: ["A feeling when something good happens", "The opposite of sad", "When you smile, you might feel this way", "Birthday parties make people feel this"] },
+                { word: "Run", type: "verb", hints: ["Moving faster than walking", "Athletes do this in races", "You do this when you're late", "Opposite of standing still"] },
+                { word: "Dog", type: "noun", hints: ["A popular pet animal", "It barks and wags its tail", "Known as 'man's best friend'", "Not a cat"] },
+                { word: "Water", type: "noun", hints: ["A liquid you drink when thirsty", "Covers most of Earth's surface", "You need it to survive", "Fish swim in it"] },
+                { word: "Book", type: "noun", hints: ["You read it for stories or information", "Made of paper with many pages", "Libraries are full of these", "Not a magazine or newspaper"] },
+                { word: "Sun", type: "noun", hints: ["The bright star in our sky", "It gives us light during the day", "Plants need it to grow", "Don't look directly at it"] },
+                { word: "Walk", type: "verb", hints: ["Moving on foot, slower than running", "You do this to get exercise", "Taking steps forward", "Babies learn to do this around age 1"] },
+                { word: "House", type: "noun", hints: ["A building where people live", "It has rooms, doors, and windows", "Families stay here", "Not an apartment or tent"] },
+                { word: "Friend", type: "noun", hints: ["Someone you like spending time with", "A person who cares about you", "Not a family member, but close to you", "You play and talk with this person"] },
+                { word: "Cold", type: "adjective", hints: ["The opposite of hot", "Ice cream feels this way", "Winter weather is often like this", "You might shiver when feeling this"] },
+                { word: "Big", type: "adjective", hints: ["The opposite of small", "Elephants and whales are this size", "When something takes up a lot of space", "Huge, large, enormous"] },
+                { word: "Sleep", type: "verb", hints: ["What you do at night in bed", "Your body rests during this", "You dream while doing this", "Babies do this a lot"] },
+                { word: "Food", type: "noun", hints: ["What you eat to survive", "Comes in many flavors and types", "You buy it at grocery stores", "Breakfast, lunch, and dinner"] },
+                { word: "Car", type: "noun", hints: ["A vehicle with four wheels", "People drive it on roads", "Needs gasoline or electricity", "Not a bus or truck"] },
+                { word: "School", type: "noun", hints: ["A place where students learn", "Teachers work here", "You study subjects like math and reading", "Kids go here during weekdays"] },
+                { word: "Rain", type: "noun", hints: ["Water falling from clouds", "Makes the ground wet", "You need an umbrella for this", "Thunder and lightning sometimes come with it"] },
+                { word: "Bird", type: "noun", hints: ["An animal with feathers and wings", "Most can fly in the sky", "Lays eggs in nests", "Chirps and sings"] },
+                { word: "Tree", type: "noun", hints: ["A tall plant with a trunk and branches", "Has leaves or needles", "Gives us shade and oxygen", "Squirrels climb up these"] },
+                { word: "Hot", type: "adjective", hints: ["The opposite of cold", "Fire feels this way", "Summer days are often this", "You sweat when feeling too much of this"] },
+                { word: "Ball", type: "noun", hints: ["A round object used in sports", "You can throw, kick, or bounce it", "Basketball, soccer, tennis all use this", "Comes in different sizes"] },
+                { word: "Jump", type: "verb", hints: ["Moving up off the ground", "Frogs and rabbits do this", "You bend your knees then push up", "The opposite of landing"] },
+                { word: "Chair", type: "noun", hints: ["Furniture you sit on", "Has legs and sometimes a back", "Found in kitchens and offices", "Not a sofa or bench"] },
+                { word: "Smile", type: "verb/noun", hints: ["A happy facial expression", "Your mouth curves up when you do this", "People do this when they're pleased", "Opposite of frowning"] },
+                { word: "Door", type: "noun", hints: ["You open and close this to enter a room", "Made of wood or metal", "Has a handle or knob", "Every building has several of these"] },
+                { word: "Cat", type: "noun", hints: ["A small furry pet", "Says 'meow' and purrs", "Likes to chase mice", "Independent and likes to sleep a lot"] },
+                { word: "Moon", type: "noun", hints: ["You see it in the night sky", "Orbits around Earth", "Changes shape throughout the month", "Astronauts have visited it"] },
+                { word: "Fast", type: "adjective", hints: ["Moving at high speed", "Cheetahs and race cars are this", "The opposite of slow", "Quick, rapid, swift"] },
+                { word: "Slow", type: "adjective", hints: ["Moving at low speed", "Turtles and snails are this", "The opposite of fast", "Taking a long time"] },
+                { word: "Night", type: "noun", hints: ["The time when it's dark outside", "The opposite of day", "When you sleep", "Stars appear during this time"] },
+                { word: "Day", type: "noun", hints: ["The time when it's light outside", "The opposite of night", "When the sun is visible", "24 hours make this"] },
+                { word: "Baby", type: "noun", hints: ["A very young child", "Cannot walk or talk yet", "Drinks milk from a bottle", "Cries when hungry or tired"] },
+                { word: "Mother", type: "noun", hints: ["A female parent", "Someone who gave birth to you", "Also called 'mom' or 'mama'", "Takes care of her children"] },
+                { word: "Father", type: "noun", hints: ["A male parent", "Also called 'dad' or 'papa'", "Helps raise children", "Part of a family"] },
+                { word: "Hand", type: "noun", hints: ["The body part at the end of your arm", "Has five fingers", "You use it to hold and touch things", "You wave with this"] },
+                { word: "Foot", type: "noun", hints: ["The body part at the end of your leg", "You walk and stand on this", "Has five toes", "You wear shoes on these"] },
+                { word: "Eye", type: "noun", hints: ["Body part used for seeing", "You have two of these on your face", "Can be different colors", "You blink with these"] },
+                { word: "Nose", type: "noun", hints: ["Body part used for smelling", "In the middle of your face", "You breathe through this", "Can get stuffy when sick"] },
+                { word: "Mouth", type: "noun", hints: ["Body part used for eating and talking", "Contains teeth and tongue", "You smile with this", "Below your nose"] },
+                { word: "Bread", type: "noun", hints: ["A baked food made from flour", "You make sandwiches with this", "Can be white or brown", "Toast is made from this"] },
+                { word: "Milk", type: "noun", hints: ["A white liquid to drink", "Comes from cows", "Good for your bones", "You pour it on cereal"] },
+                { word: "Shoe", type: "noun", hints: ["You wear this on your foot", "Protects your feet when walking", "Comes in pairs", "Can have laces or velcro"] },
+                { word: "Hat", type: "noun", hints: ["You wear this on your head", "Protects from sun or cold", "Comes in many styles", "Baseball players wear these"] },
+                { word: "Shirt", type: "noun", hints: ["Clothing for your upper body", "Has sleeves for your arms", "You wear it over your chest", "Can be short or long sleeved"] },
+                { word: "Pants", type: "noun", hints: ["Clothing for your legs", "Also called trousers", "You wear them below your waist", "Jeans are a type of these"] },
+                { word: "Red", type: "adjective", hints: ["A primary color", "The color of stop signs", "Apples and strawberries can be this color", "Blood is this color"] },
+                { word: "Blue", type: "adjective", hints: ["A primary color", "The color of the sky", "Ocean water appears this color", "Opposite of red in patriotic themes"] },
+                { word: "Green", type: "adjective", hints: ["The color of grass", "Mix yellow and blue to get this", "Trees have this color in summer", "Traffic lights use this for 'go'"] },
+                { word: "Yellow", type: "adjective", hints: ["A primary color", "The color of the sun", "Bananas are this color", "Mix with blue to make green"] },
+                { word: "Table", type: "noun", hints: ["Furniture with a flat top", "You eat meals on this", "Has legs to hold it up", "Often found in kitchens"] },
+                { word: "Window", type: "noun", hints: ["You look through this to see outside", "Made of glass", "Can be opened or closed", "Every house has several of these"] },
+                { word: "Flower", type: "noun", hints: ["A colorful plant part", "Smells nice and beautiful", "Roses and tulips are types", "Grows in gardens"] },
+                { word: "Grass", type: "noun", hints: ["Green plant covering lawns", "You mow this in the yard", "Soft under your feet", "Cows eat this"] },
+                { word: "Cloud", type: "noun", hints: ["White fluffy thing in the sky", "Made of tiny water droplets", "Can bring rain", "Changes shapes"] },
+                { word: "Star", type: "noun", hints: ["You see these at night", "They twinkle in the sky", "The sun is one of these", "You can wish upon one"] },
+                { word: "Fish", type: "noun", hints: ["An animal that lives in water", "Has fins and scales", "Swims in oceans and rivers", "People catch and eat these"] },
+                { word: "Beach", type: "noun", hints: ["Sandy area by the ocean", "People swim and sunbathe here", "You can build castles in the sand", "Waves crash on the shore"] },
+                { word: "Snow", type: "noun", hints: ["Frozen water that falls from sky", "White and cold", "You can make snowmen with this", "Falls in winter"] },
+                { word: "Ice", type: "noun", hints: ["Frozen water", "Very cold and slippery", "You put it in drinks", "You can skate on this"] },
+                { word: "Fire", type: "noun", hints: ["Hot and bright", "Burns and gives warmth", "Orange and yellow flames", "Can be dangerous"] },
+                { word: "Wind", type: "noun", hints: ["Moving air you can feel", "Makes trees sway", "Flies kites", "Can be gentle or strong"] },
+                { word: "Egg", type: "noun", hints: ["Chickens lay these", "You eat them for breakfast", "Can be scrambled or fried", "Has a shell, white, and yolk"] },
+                { word: "Cheese", type: "noun", hints: ["A dairy food", "Made from milk", "Yellow or white", "You put it on pizza"] },
+                { word: "Pizza", type: "noun", hints: ["Round food with toppings", "Has cheese and tomato sauce", "Cut into slices", "Very popular fast food"] },
+                { word: "Cake", type: "noun", hints: ["A sweet baked dessert", "Often for birthdays", "Can have frosting", "You put candles on top"] },
+                { word: "Toy", type: "noun", hints: ["Something children play with", "Can be a doll or car", "Fun and entertaining", "Found in toy stores"] },
+                { word: "Game", type: "noun", hints: ["An activity you play", "Can have rules and winners", "Fun and competitive", "Board games, video games"] },
+                { word: "Music", type: "noun", hints: ["Sounds with rhythm and melody", "You listen to songs", "Made with instruments", "Can make you dance"] },
+                { word: "Song", type: "noun", hints: ["Words and music together", "You can sing this", "Has verses and a chorus", "Played on the radio"] },
+                { word: "Dance", type: "verb/noun", hints: ["Moving your body to music", "Can be a performance", "Ballet and hip-hop are types", "You do this at parties"] },
+                { word: "Laugh", type: "verb", hints: ["Sound you make when funny", "Shows you're happy", "Ha ha ha!", "Opposite of crying"] },
+                { word: "Cry", type: "verb", hints: ["Tears fall from your eyes", "When you're sad or hurt", "Babies do this a lot", "Opposite of laughing"] },
+                { word: "Sing", type: "verb", hints: ["Making music with your voice", "Performing a song", "Birds do this too", "Happens in a choir"] },
+                { word: "Talk", type: "verb", hints: ["Using words to communicate", "Having a conversation", "Speaking with someone", "Babies learn to do this"] },
+                { word: "Listen", type: "verb", hints: ["Paying attention with your ears", "Hearing what someone says", "Important for learning", "What you do with music"] },
+                { word: "Read", type: "verb", hints: ["Looking at words and understanding", "What you do with books", "Learning from text", "You're doing this now"] },
+                { word: "Write", type: "verb", hints: ["Putting words on paper", "Using a pen or pencil", "Creating text", "Authors do this for books"] },
+                { word: "Draw", type: "verb", hints: ["Creating pictures with pencils", "Making art on paper", "What artists do", "Children love to do this"] },
+                { word: "Play", type: "verb", hints: ["Having fun", "What kids do with toys", "Enjoying games and activities", "Not working"] },
+                { word: "Work", type: "verb/noun", hints: ["Doing a job or task", "What adults do for money", "The opposite of play", "Requires effort"] },
+                { word: "Learn", type: "verb", hints: ["Gaining new knowledge", "What happens in school", "Understanding something new", "Studying and practicing"] },
+                { word: "Teach", type: "verb", hints: ["Helping others learn", "What teachers do", "Showing someone how", "Explaining information"] },
+                { word: "Help", type: "verb", hints: ["Assisting someone", "Making things easier", "Being kind and supportive", "Lending a hand"] },
+                { word: "Love", type: "verb/noun", hints: ["A strong caring feeling", "What families feel for each other", "The opposite of hate", "The most powerful emotion"] },
+                { word: "Like", type: "verb", hints: ["Enjoying something", "Having a preference for", "Less strong than love", "Finding something pleasant"] },
+                { word: "Want", type: "verb", hints: ["Desiring something", "Wishing to have", "When you ask for something", "A strong wish"] },
+                { word: "Need", type: "verb", hints: ["Requiring something necessary", "More important than want", "Essential for life", "Cannot do without"] },
+                { word: "Give", type: "verb", hints: ["Handing something to someone", "Sharing or donating", "The opposite of take", "Being generous"] },
+                { word: "Take", type: "verb", hints: ["Grabbing or receiving something", "Getting from somewhere", "The opposite of give", "Accepting something"] },
+                { word: "Open", type: "verb/adjective", hints: ["Not closed", "Making something accessible", "Opposite of shut", "Like an unlocked door"] },
+                { word: "Close", type: "verb/adjective", hints: ["Shutting something", "Making it not open", "Opposite of open", "Like closing a book"] },
+                { word: "Stand", type: "verb", hints: ["Being on your feet", "Not sitting or lying down", "Upright position", "What you do while waiting"] },
+                { word: "Sit", type: "verb", hints: ["Resting on your bottom", "What you do on a chair", "Not standing", "Relaxing position"] },
+                { word: "Eat", type: "verb", hints: ["Putting food in your mouth", "Chewing and swallowing", "Having a meal", "Necessary for energy"] },
+                { word: "Drink", type: "verb", hints: ["Swallowing liquid", "Having a beverage", "When you're thirsty", "Using a cup or straw"] },
+                { word: "Cook", type: "verb", hints: ["Preparing food with heat", "What chefs do", "Using a stove or oven", "Making dinner"] },
+                { word: "Clean", type: "verb/adjective", hints: ["Removing dirt", "Making something tidy", "Washing or wiping", "The opposite of dirty"] },
+                { word: "Wash", type: "verb", hints: ["Cleaning with water", "What you do to dishes", "Bathing or showering", "Using soap"] },
+                { word: "Buy", type: "verb", hints: ["Purchasing something", "Paying money for items", "Shopping at a store", "The opposite of selling"] },
+                { word: "Sell", type: "verb", hints: ["Giving something for money", "What stores do", "The opposite of buying", "Trading for cash"] },
+                { word: "Go", type: "verb", hints: ["Moving to another place", "Leaving from here", "Traveling somewhere", "The opposite of stop"] },
+                { word: "Come", type: "verb", hints: ["Moving toward here", "Arriving at a place", "The opposite of go", "Approaching"] },
+                { word: "Stop", type: "verb", hints: ["Ceasing movement", "Not continuing", "Halting an action", "Red light means this"] },
+                { word: "Start", type: "verb", hints: ["Beginning something", "The opposite of stop", "Commencing an action", "Green light means this"] },
+                { word: "Find", type: "verb", hints: ["Discovering something", "Locating what you're looking for", "The opposite of losing", "Searching and succeeding"] },
+                { word: "Lose", type: "verb", hints: ["Not able to find something", "Misplacing an item", "The opposite of winning or finding", "When something goes missing"] },
+                { word: "Win", type: "verb", hints: ["Being victorious", "Coming in first place", "The opposite of lose", "Succeeding in competition"] },
+                { word: "Ask", type: "verb", hints: ["Posing a question", "Requesting information", "Inquiring about something", "Raising your hand to do this"] },
+                { word: "Answer", type: "verb/noun", hints: ["Responding to a question", "Giving a reply", "The opposite of asking", "What you say after someone asks"] },
+                { word: "Know", type: "verb", hints: ["Having information", "Being aware of something", "Understanding a fact", "The opposite of being unsure"] },
+                { word: "Think", type: "verb", hints: ["Using your mind", "Considering ideas", "What your brain does", "Having thoughts"] },
+                { word: "Feel", type: "verb", hints: ["Experiencing emotions", "Touching with your hands", "Sensing something", "Having a feeling"] },
+                { word: "See", type: "verb", hints: ["Using your eyes", "Looking at something", "Watching or viewing", "Perceiving visually"] },
+                { word: "Hear", type: "verb", hints: ["Using your ears", "Perceiving sounds", "Listening to something", "The sense of sound"] },
+                { word: "Touch", type: "verb", hints: ["Making physical contact", "Feeling with your hands", "One of the five senses", "Reaching out to something"] },
+                { word: "Smell", type: "verb/noun", hints: ["Using your nose", "Perceiving odors", "Detecting scents", "One of the five senses"] },
+                { word: "Taste", type: "verb/noun", hints: ["Using your tongue", "Perceiving flavors", "Trying food", "Sweet, sour, salty, bitter"] },
+                { word: "Look", type: "verb", hints: ["Directing your eyes", "Observing something", "Paying visual attention", "What you do to see"] },
+                { word: "Watch", type: "verb", hints: ["Observing over time", "Looking at something closely", "What you do with TV", "Paying attention visually"] },
+                { word: "Show", type: "verb", hints: ["Displaying something", "Making visible", "Demonstrating", "Letting others see"] },
+                { word: "Tell", type: "verb", hints: ["Communicating information", "Saying something to someone", "Sharing a story", "Informing others"] },
+                { word: "Say", type: "verb", hints: ["Speaking words", "Expressing something verbally", "Using your voice", "Stating something"] },
+                { word: "Call", type: "verb", hints: ["Using a phone", "Shouting someone's name", "Summoning someone", "Making a telephone connection"] },
+                { word: "Pull", type: "verb", hints: ["Drawing something toward you", "Tugging on something", "The opposite of push", "Opening some doors this way"] },
+                { word: "Push", type: "verb", hints: ["Pressing something away", "Shoving forward", "The opposite of pull", "Opening some doors this way"] },
+                { word: "Throw", type: "verb", hints: ["Tossing something through air", "What you do with a ball", "Launching an object", "Using your arm to send something"] },
+                { word: "Catch", type: "verb", hints: ["Grabbing something in the air", "What you do after a throw", "Stopping something from falling", "Using your hands to grab"] },
+                { word: "Kick", type: "verb", hints: ["Hitting with your foot", "What you do in soccer", "Striking with your leg", "Not using your hands"] },
+                { word: "Hit", type: "verb", hints: ["Striking something", "Making contact forcefully", "What you do in baseball", "Colliding with something"] },
+                { word: "Cut", type: "verb", hints: ["Dividing with a sharp tool", "Using scissors or a knife", "Making something shorter", "Slicing through"] },
+                { word: "Break", type: "verb", hints: ["Damaging into pieces", "Shattering something", "The opposite of fixing", "When glass falls"] },
+                { word: "Fix", type: "verb", hints: ["Repairing something broken", "Making it work again", "The opposite of breaking", "What mechanics do"] },
+                { word: "Build", type: "verb", hints: ["Constructing something", "Creating a structure", "What builders do", "Putting pieces together"] },
+                { word: "Make", type: "verb", hints: ["Creating or producing", "Manufacturing something", "Doing or performing", "Causing something to exist"] },
+                { word: "Use", type: "verb", hints: ["Employing something", "Putting to work", "Operating a tool", "Applying for a purpose"] },
+                { word: "Hold", type: "verb", hints: ["Grasping in your hands", "Carrying something", "Keeping in position", "Not letting go"] },
+                { word: "Carry", type: "verb", hints: ["Transporting something", "Moving while holding", "Taking from place to place", "Supporting weight while moving"] },
+                { word: "Move", type: "verb", hints: ["Changing position", "Going from one place to another", "Not staying still", "Shifting location"] },
+                { word: "Turn", type: "verb", hints: ["Rotating or changing direction", "Spinning around", "Going left or right", "Facing a different way"] },
+                { word: "Fall", type: "verb", hints: ["Dropping down", "Losing balance", "What leaves do in autumn", "Going from high to low"] },
+                { word: "Rise", type: "verb", hints: ["Going upward", "Getting higher", "What the sun does in morning", "The opposite of falling"] },
+                { word: "Fly", type: "verb", hints: ["Moving through the air", "What birds and planes do", "Soaring above ground", "Having wings helps"] },
+                { word: "Swim", type: "verb", hints: ["Moving through water", "What fish do naturally", "Using arms and legs in pool", "An Olympic sport"] },
+                { word: "Climb", type: "verb", hints: ["Going up something", "What you do on a ladder", "Ascending a mountain", "Moving upward with effort"] },
+                { word: "Wait", type: "verb", hints: ["Staying until something happens", "Being patient", "Not leaving yet", "Remaining in place"] },
+                { word: "Stay", type: "verb", hints: ["Remaining in a place", "Not leaving", "Continuing to be somewhere", "What dogs learn as a command"] },
+                { word: "Leave", type: "verb", hints: ["Departing from a place", "Going away", "The opposite of arriving", "Exiting somewhere"] },
+                { word: "Arrive", type: "verb", hints: ["Reaching a destination", "Getting to a place", "The opposite of leaving", "Coming to where you're going"] },
+                { word: "Follow", type: "verb", hints: ["Going behind someone", "Coming after", "Obeying or tracking", "Not leading"] },
+                { word: "Lead", type: "verb", hints: ["Going in front", "Being a guide", "Showing the way", "The opposite of following"] },
+                { word: "Meet", type: "verb", hints: ["Coming together", "Encountering someone", "Having an appointment", "Seeing someone for first time"] },
+                { word: "Grow", type: "verb", hints: ["Getting bigger", "What plants do", "Increasing in size", "What children do over time"] },
+                { word: "Change", type: "verb/noun", hints: ["Becoming different", "Transforming or altering", "Not staying the same", "Making a modification"] },
+                { word: "Try", type: "verb", hints: ["Attempting something", "Making an effort", "Giving it a shot", "Not giving up without doing"] },
+                { word: "Begin", type: "verb", hints: ["Starting something", "The first part", "Commencing an action", "The opposite of ending"] },
+                { word: "End", type: "verb/noun", hints: ["Finishing something", "The final part", "Concluding", "The opposite of beginning"] },
+                { word: "Remember", type: "verb", hints: ["Recalling from memory", "Not forgetting", "Keeping in your mind", "What you do with past events"] },
+                { word: "Forget", type: "verb", hints: ["Not remembering", "Losing from memory", "The opposite of remembering", "When you can't recall"] },
+                { word: "Hope", type: "verb/noun", hints: ["Wishing for something", "Optimistic feeling", "Wanting something good", "Looking forward positively"] },
+                { word: "Wish", type: "verb/noun", hints: ["Wanting something", "Hoping for something", "What you do with birthday candles", "A desire or dream"] },
+                { word: "Dream", type: "verb/noun", hints: ["Images while sleeping", "Having aspirations", "What happens when you sleep", "A big goal or hope"] },
+                { word: "Wake", type: "verb", hints: ["Stopping sleep", "Becoming conscious", "Getting up from bed", "The opposite of sleeping"] },
+                { word: "Time", type: "noun", hints: ["Hours, minutes, seconds", "What clocks measure", "Past, present, and future", "You never have enough of this"] },
+                { word: "Year", type: "noun", hints: ["365 days", "Twelve months", "A full trip around the sun", "You celebrate your birthday once per this"] },
+                { word: "Month", type: "noun", hints: ["About 30 days", "January, February, March, etc.", "Twelve of these in a year", "A calendar section"] },
+                { word: "Week", type: "noun", hints: ["Seven days", "Monday through Sunday", "Seven of these in most months", "School happens five days per this"] },
+                { word: "Today", type: "noun/adverb", hints: ["This current day", "Not yesterday or tomorrow", "Right now, this 24 hours", "The present day"] },
+                { word: "Yesterday", type: "noun/adverb", hints: ["The day before today", "In the past", "24 hours ago", "Not today or tomorrow"] },
+                { word: "Tomorrow", type: "noun/adverb", hints: ["The day after today", "In the future", "In 24 hours", "Not today or yesterday"] },
+                { word: "Morning", type: "noun", hints: ["Early part of the day", "When the sun rises", "Breakfast time", "Before noon"] },
+                { word: "Afternoon", type: "noun", hints: ["After noon, before evening", "Middle of the day", "Lunch and after", "PM time"] },
+                { word: "Evening", type: "noun", hints: ["Late part of the day", "After afternoon", "Dinner time", "Before night"] },
+                { word: "Money", type: "noun", hints: ["Used to buy things", "Dollars, euros, pounds", "You earn it from work", "Coins and bills"] },
+                { word: "Gift", type: "noun", hints: ["A present you give someone", "For birthdays or holidays", "Wrapped in paper", "Shows you care"] },
+                { word: "Party", type: "noun", hints: ["A celebration gathering", "With friends and family", "Birthdays often have these", "Music, food, and fun"] },
+                { word: "Birthday", type: "noun", hints: ["Day you were born", "Celebrated once per year", "Often has cake and candles", "You get older on this day"] },
+                { word: "Holiday", type: "noun", hints: ["Special day or vacation", "Christmas and Halloween are these", "Time off from work or school", "Celebrated with traditions"] },
+                { word: "Summer", type: "noun", hints: ["Warmest season", "After spring, before autumn", "School vacation time", "Beach weather"] },
+                { word: "Winter", type: "noun", hints: ["Coldest season", "Snow and ice season", "After autumn, before spring", "December to February"] },
+                { word: "Spring", type: "noun", hints: ["Season after winter", "Flowers bloom", "Before summer", "March to May"] },
+                { word: "Autumn", type: "noun", hints: ["Also called fall", "Leaves change color", "After summer, before winter", "September to November"] },
+                { word: "Color", type: "noun", hints: ["Red, blue, yellow, etc.", "What rainbows have", "Artists use many of these", "What makes things beautiful"] },
+                { word: "Number", type: "noun", hints: ["Like 1, 2, 3", "Used for counting", "Math uses these", "Quantity symbols"] },
+                { word: "Letter", type: "noun", hints: ["Part of the alphabet", "A, B, C, etc.", "Used to make words", "26 of these in English"] },
+                { word: "Word", type: "noun", hints: ["Letters put together", "Has a meaning", "Sentences are made of these", "You're reading many right now"] },
+                { word: "Name", type: "noun", hints: ["What you're called", "Everyone has one", "Identifies a person", "Your first word learned"] },
+                { word: "Place", type: "noun", hints: ["A location or spot", "Somewhere you can go", "A specific area", "Not a person or thing"] },
+                { word: "Thing", type: "noun", hints: ["An object or item", "Something you can touch", "Not a person or place", "A general word for stuff"] },
+                { word: "People", type: "noun", hints: ["Human beings", "Men, women, and children", "More than one person", "Society and community"] }
+            ],
+            medium: [
+                { word: "Adventure", type: "noun", hints: ["An exciting experience or journey", "Indiana Jones movies are full of this", "Exploring unknown places", "Risky but thrilling activities"] },
+                { word: "Courage", type: "noun", hints: ["Bravery in the face of danger", "What heroes show", "Not being afraid to do what's right", "Lions are symbols of this"] },
+                { word: "Whisper", type: "verb", hints: ["Speaking very quietly", "Telling a secret softly", "The opposite of shouting", "Libraries encourage this"] },
+                { word: "Ancient", type: "adjective", hints: ["Very old from long ago", "Pyramids are this", "Opposite of modern", "Historical and from past civilizations"] },
+                { word: "Celebrate", type: "verb", hints: ["Having a party for something special", "Marking an achievement or occasion", "What you do on birthdays", "Showing joy for an event"] },
+                { word: "Mystery", type: "noun", hints: ["Something unknown or puzzling", "Detective stories have this", "A secret to be solved", "Sherlock Holmes solves these"] },
+                { word: "Journey", type: "noun", hints: ["A long trip or travel", "Going from one place to another", "An adventure over time", "Not just a short walk"] },
+                { word: "Promise", type: "noun/verb", hints: ["A commitment to do something", "Giving your word", "A pledge you should keep", "Breaking this hurts trust"] },
+                { word: "Treasure", type: "noun", hints: ["Valuable items worth a lot", "Pirates search for this", "Gold and jewels", "Something precious and rare"] },
+                { word: "Wisdom", type: "noun", hints: ["Deep knowledge and good judgment", "What comes with experience", "Opposite of foolishness", "Owls symbolize this"] },
+                { word: "Discover", type: "verb", hints: ["Finding something new", "Learning something for first time", "Columbus did this to America", "Making a new finding"] },
+                { word: "Imagine", type: "verb", hints: ["Creating pictures in your mind", "Thinking of possibilities", "What you need for creativity", "Daydreaming and wondering"] },
+                { word: "Honest", type: "adjective", hints: ["Telling the truth", "Not lying or cheating", "Being genuine and sincere", "What trustworthy people are"] },
+                { word: "Gentle", type: "adjective", hints: ["Soft and careful", "Kind and tender", "The opposite of rough", "How you pet a kitten"] },
+                { word: "Brave", type: "adjective", hints: ["Not afraid of danger", "Courageous and bold", "What firefighters are", "Facing fears head-on"] },
+                { word: "Curious", type: "adjective", hints: ["Wanting to know more", "Asking lots of questions", "Interested in learning", "Children naturally are this"] },
+                { word: "Patient", type: "adjective", hints: ["Able to wait calmly", "Not getting frustrated easily", "Opposite of impatient", "Good teachers have this quality"] },
+                { word: "Proud", type: "adjective", hints: ["Feeling satisfied with achievement", "Happy about something you did", "Taking pleasure in success", "Parents feel this about their kids"] },
+                { word: "Jealous", type: "adjective", hints: ["Wanting what others have", "Feeling envious", "Not happy about someone's success", "Green is the color of this"] },
+                { word: "Lonely", type: "adjective", hints: ["Feeling alone and sad", "Missing companionship", "Wanting friends around", "Isolation creates this feeling"] },
+                { word: "Exciting", type: "adjective", hints: ["Causing enthusiasm and energy", "Thrilling and stimulating", "Roller coasters are this", "The opposite of boring"] },
+                { word: "Boring", type: "adjective", hints: ["Not interesting at all", "Dull and monotonous", "Makes you yawn", "The opposite of exciting"] },
+                { word: "Difficult", type: "adjective", hints: ["Hard to do", "Not easy, challenging", "Requires effort and skill", "The opposite of simple"] },
+                { word: "Easy", type: "adjective", hints: ["Not hard to do", "Simple and straightforward", "The opposite of difficult", "Requires little effort"] },
+                { word: "Important", type: "adjective", hints: ["Significant and meaningful", "Really matters", "Should not be ignored", "High priority"] },
+                { word: "Famous", type: "adjective", hints: ["Well-known by many people", "Celebrities are this", "Recognized everywhere", "The opposite of unknown"] },
+                { word: "Powerful", type: "adjective", hints: ["Having great strength or influence", "Able to control things", "Strong and mighty", "Kings and queens are this"] },
+                { word: "Dangerous", type: "adjective", hints: ["Likely to cause harm", "Not safe, risky", "Wild animals can be this", "Needs caution"] },
+                { word: "Safe", type: "adjective", hints: ["Protected from harm", "Not dangerous", "Secure and sound", "The opposite of risky"] },
+                { word: "Popular", type: "adjective", hints: ["Liked by many people", "Well-received and admired", "Trending or fashionable", "The opposite of unpopular"] },
+                { word: "Strange", type: "adjective", hints: ["Unusual and odd", "Not normal or familiar", "Weird or peculiar", "Makes you wonder"] },
+                { word: "Common", type: "adjective", hints: ["Found often everywhere", "Normal and usual", "Not rare or special", "Ordinary and typical"] },
+                { word: "Rare", type: "adjective", hints: ["Not found often", "Uncommon and special", "Valuable because scarce", "The opposite of common"] },
+                { word: "Perfect", type: "adjective", hints: ["Without any flaws", "The best possible", "Ideal and flawless", "Impossible to improve"] },
+                { word: "Terrible", type: "adjective", hints: ["Very bad or awful", "Horrible and dreadful", "Extremely unpleasant", "Worse than just bad"] },
+                { word: "Wonderful", type: "adjective", hints: ["Extremely good", "Causing delight and joy", "Marvelous and fantastic", "Better than just nice"] },
+                { word: "Silly", type: "adjective", hints: ["Foolish in a playful way", "Acting goofy or absurd", "Making people laugh", "Not taking things seriously"] },
+                { word: "Serious", type: "adjective", hints: ["Not joking around", "Important and grave", "Thoughtful and solemn", "The opposite of silly"] },
+                { word: "Polite", type: "adjective", hints: ["Having good manners", "Respectful and courteous", "Saying 'please' and 'thank you'", "The opposite of rude"] },
+                { word: "Rude", type: "adjective", hints: ["Bad manners, not polite", "Disrespectful and offensive", "Hurting people's feelings", "The opposite of courteous"] },
+                { word: "Calm", type: "adjective", hints: ["Peaceful and quiet", "Not excited or upset", "Relaxed and composed", "The opposite of anxious"] },
+                { word: "Angry", type: "adjective", hints: ["Feeling mad or furious", "Upset and irritated", "When you lose your temper", "Red-faced emotion"] },
+                { word: "Scared", type: "adjective", hints: ["Feeling afraid or frightened", "Nervous about danger", "What horror movies make you", "The opposite of brave"] },
+                { word: "Tired", type: "adjective", hints: ["Needing rest or sleep", "Exhausted and weary", "Low on energy", "How you feel after exercise"] },
+                { word: "Hungry", type: "adjective", hints: ["Wanting food", "Your stomach feels empty", "Need to eat soon", "What makes you look for snacks"] },
+                { word: "Thirsty", type: "adjective", hints: ["Wanting to drink", "Your mouth feels dry", "Need water or beverage", "What makes you reach for a drink"] },
+                { word: "Comfortable", type: "adjective", hints: ["Feeling relaxed and at ease", "Not causing discomfort", "Cozy and pleasant", "How a good chair feels"] },
+                { word: "Nervous", type: "adjective", hints: ["Feeling worried or anxious", "Uneasy about something", "Butterflies in your stomach", "Before a big test"] },
+                { word: "Surprised", type: "adjective", hints: ["Not expecting something", "Caught off guard", "Shocked or amazed", "Unexpected news causes this"] },
+                { word: "Confused", type: "adjective", hints: ["Not understanding something", "Puzzled and uncertain", "Mixed up and unclear", "Need more explanation"] },
+                { word: "Confident", type: "adjective", hints: ["Sure of yourself", "Believing in your abilities", "Not doubting", "Self-assured and certain"] },
+                { word: "Embarrassed", type: "adjective", hints: ["Feeling ashamed or awkward", "Face turns red", "Uncomfortable socially", "When you make a mistake publicly"] },
+                { word: "Grateful", type: "adjective", hints: ["Feeling thankful", "Appreciating kindness", "What you feel when helped", "Opposite of ungrateful"] },
+                { word: "Success", type: "noun", hints: ["Achieving a goal", "Winning or accomplishing", "The opposite of failure", "What hard work brings"] },
+                { word: "Failure", type: "noun", hints: ["Not succeeding", "Not reaching a goal", "The opposite of success", "Learning opportunity"] },
+                { word: "Question", type: "noun", hints: ["Something you ask", "Seeking information", "Ends with a question mark", "What curious people pose"] },
+                { word: "Solution", type: "noun", hints: ["An answer to a problem", "Way to fix something", "The result of solving", "What you find after searching"] },
+                { word: "Problem", type: "noun", hints: ["A difficulty or challenge", "Something needs solving", "An issue or trouble", "What solutions fix"] },
+                { word: "Memory", type: "noun", hints: ["Something you remember", "Past experience stored in brain", "What you recall", "Can be good or bad"] },
+                { word: "Idea", type: "noun", hints: ["A thought or concept", "A plan in your mind", "What a light bulb symbolizes", "Creative thinking produces this"] },
+                { word: "Opinion", type: "noun", hints: ["What you think or believe", "Personal view or judgment", "Not a fact", "Everyone has their own"] },
+                { word: "Reason", type: "noun", hints: ["Why something happens", "Explanation or cause", "Logical thinking", "The 'because' answer"] },
+                { word: "Example", type: "noun", hints: ["A specific case showing something", "An illustration or sample", "'For instance' introduces this", "Shows what you mean"] },
+                { word: "Mistake", type: "noun", hints: ["An error or wrong action", "Something done incorrectly", "Everyone makes these", "Learning opportunity"] },
+                { word: "Accident", type: "noun", hints: ["Something unintended that happens", "Not done on purpose", "Can cause damage or injury", "Oops! moment"] },
+                { word: "Luck", type: "noun", hints: ["Chance or fortune", "Good or bad by coincidence", "Four-leaf clovers bring this", "Not based on skill"] },
+                { word: "Habit", type: "noun", hints: ["Something done regularly", "A routine or custom", "Can be good or bad", "Brushing teeth is a good one"] },
+                { word: "Skill", type: "noun", hints: ["Ability to do something well", "Learned through practice", "Talent or expertise", "What training develops"] },
+                { word: "Knowledge", type: "noun", hints: ["Information and understanding", "What you learn and know", "Facts and education", "Power according to a saying"] },
+                { word: "Experience", type: "noun", hints: ["Things you've done or lived through", "Practical knowledge from doing", "What age brings", "Teachers value this"] },
+                { word: "Talent", type: "noun", hints: ["Natural ability or gift", "Something you're good at", "Special skill or aptitude", "What makes you stand out"] },
+                { word: "Strength", type: "noun", hints: ["Power and force", "Ability to lift or endure", "Physical or mental power", "What muscles show"] },
+                { word: "Weakness", type: "noun", hints: ["A flaw or vulnerable point", "Lack of strength", "Area needing improvement", "Everyone has at least one"] },
+                { word: "Pride", type: "noun", hints: ["Feeling of self-respect", "Satisfaction in achievement", "Can be good or excessive", "Lions live in groups of this"] },
+                { word: "Shame", type: "noun", hints: ["Feeling of guilt or disgrace", "Embarrassment from wrongdoing", "Opposite of pride", "What mistakes can cause"] },
+                { word: "Joy", type: "noun", hints: ["Feeling of great happiness", "Delight and pleasure", "Strong positive emotion", "Christmas brings this to many"] },
+                { word: "Sadness", type: "noun", hints: ["Feeling unhappy", "Sorrow and grief", "Opposite of joy", "When you feel down"] },
+                { word: "Fear", type: "noun", hints: ["Feeling of being afraid", "Anxiety about danger", "What courage overcomes", "Phobias are extreme forms"] },
+                { word: "Hope", type: "noun", hints: ["Expectation for something good", "Optimistic feeling", "Believing in better future", "What people need in hard times"] },
+                { word: "Trust", type: "noun", hints: ["Believing someone is reliable", "Confidence in others", "Foundation of relationships", "Takes time to build"] },
+                { word: "Respect", type: "noun", hints: ["Admiration for someone", "Treating others well", "Valuing someone's worth", "What elders deserve"] },
+                { word: "Friendship", type: "noun", hints: ["Close relationship between people", "Bond of mutual affection", "What best friends share", "Based on trust and caring"] },
+                { word: "Enemy", type: "noun", hints: ["Someone opposed to you", "A foe or adversary", "Opposite of a friend", "In conflict with you"] },
+                { word: "Stranger", type: "noun", hints: ["Someone you don't know", "An unfamiliar person", "Not a friend or family", "Don't talk to these alone"] },
+                { word: "Neighbor", type: "noun", hints: ["Person living next to you", "Nearby resident", "Lives in your area", "Good ones are friendly"] },
+                { word: "Leader", type: "noun", hints: ["Person who guides others", "In charge of a group", "Makes important decisions", "President or captain"] },
+                { word: "Member", type: "noun", hints: ["Part of a group or team", "Someone who belongs", "Not the leader, but involved", "Clubs have these"] },
+                { word: "Guest", type: "noun", hints: ["Visitor to your home", "Someone invited", "Not the host", "You make them feel welcome"] },
+                { word: "Host", type: "noun", hints: ["Person who welcomes guests", "Organizer of an event", "Opposite of guest", "Provides hospitality"] },
+                { word: "Owner", type: "noun", hints: ["Person who possesses something", "Has legal rights to it", "Boss of a business", "Whose name is on the deed"] },
+                { word: "Customer", type: "noun", hints: ["Person who buys goods", "Shops at stores", "Businesses serve these", "Always right, according to saying"] },
+                { word: "Crowd", type: "noun", hints: ["Large group of people", "Many people together", "Can be at concerts", "A mob or gathering"] },
+                { word: "Community", type: "noun", hints: ["Group living in same area", "People with shared interests", "Neighborhood or society", "Working together for good"] },
+                { word: "Society", type: "noun", hints: ["All people living together", "Organized community", "Cultural and social system", "Civilization as a whole"] },
+                { word: "Culture", type: "noun", hints: ["Customs and traditions of people", "Arts, beliefs, and behaviors", "What makes groups unique", "Language and food are parts"] },
+                { word: "Tradition", type: "noun", hints: ["Custom passed down", "What families do yearly", "Long-established practice", "Holiday celebrations are these"] },
+                { word: "Custom", type: "noun", hints: ["Usual way of doing things", "Habitual practice", "Cultural behavior", "What's normal in a place"] },
+                { word: "Law", type: "noun", hints: ["Official rule to follow", "What police enforce", "Breaking it has consequences", "Keeps society in order"] },
+                { word: "Rule", type: "noun", hints: ["Guideline or regulation", "What you must follow", "Games have these", "Parents set these at home"] },
+                { word: "Freedom", type: "noun", hints: ["Ability to choose and act", "Not being controlled", "Liberty and independence", "What prisoners don't have"] },
+                { word: "Right", type: "noun", hints: ["Something you're entitled to", "Legal or moral entitlement", "Everyone deserves these", "Free speech is one"] },
+                { word: "Duty", type: "noun", hints: ["Responsibility or obligation", "What you must do", "Moral or legal requirement", "Soldiers have this to country"] },
+                { word: "Choice", type: "noun", hints: ["Option or decision to make", "Picking between things", "Having alternatives", "Free will allows this"] },
+                { word: "Decision", type: "noun", hints: ["Conclusion or choice made", "Final determination", "Result of thinking", "What you make after choosing"] },
+                { word: "Plan", type: "noun", hints: ["Strategy or scheme", "Organized way to do something", "Map for achieving goal", "Thinking ahead"] },
+                { word: "Goal", type: "noun", hints: ["Aim or objective", "What you work toward", "Target or destination", "Soccer has these to score"] },
+                { word: "Dream", type: "noun", hints: ["Hope or aspiration", "What you wish for", "Also happens when sleeping", "Can come true with work"] },
+                { word: "Future", type: "noun", hints: ["Time yet to come", "What hasn't happened yet", "Tomorrow and beyond", "Opposite of the past"] },
+                { word: "Past", type: "noun", hints: ["Time that has gone by", "What already happened", "Yesterday and before", "History is this"] },
+                { word: "Present", type: "noun", hints: ["Current time, right now", "Not past or future", "This very moment", "Also means a gift"] },
+                { word: "Moment", type: "noun", hints: ["Brief period of time", "A very short while", "Instant or second", "'Just a ___' means wait"] },
+                { word: "Forever", type: "adverb", hints: ["For all time", "Without end", "Eternally", "Diamonds are ___ (saying)"] },
+                { word: "Never", type: "adverb", hints: ["Not ever, at no time", "The opposite of always", "Not once in history", "Say ____ to drugs"] },
+                { word: "Always", type: "adverb", hints: ["At all times", "Constantly and forever", "Every single time", "The opposite of never"] },
+                { word: "Sometimes", type: "adverb", hints: ["On some occasions", "Not always, but occasionally", "Now and then", "More than never, less than always"] },
+                { word: "Often", type: "adverb", hints: ["Many times, frequently", "Regularly and commonly", "More than sometimes", "Not rarely"] },
+                { word: "Rarely", type: "adverb", hints: ["Not often, seldom", "Almost never", "Infrequently", "The opposite of often"] },
+                { word: "Already", type: "adverb", hints: ["By this time", "Before now or before then", "Sooner than expected", "'Have you eaten ___?'"] },
+                { word: "Almost", type: "adverb", hints: ["Nearly but not quite", "Very close to", "Just about", "Not completely, but close"] },
+                { word: "Enough", type: "adverb/adjective", hints: ["Sufficient amount", "As much as needed", "Not too little or much", "'That's ___' means stop"] },
+                { word: "Actually", type: "adverb", hints: ["In fact, really", "Truth is, truly", "Correcting a misconception", "Used to emphasize reality"] },
+                { word: "Probably", type: "adverb", hints: ["Likely but not certain", "Most likely will happen", "Good chance of occurring", "More than possibly"] },
+                { word: "Possibly", type: "adverb", hints: ["Maybe, perhaps", "Could happen", "Not certain but potential", "Lower chance than probably"] },
+                { word: "Definitely", type: "adverb", hints: ["Without doubt", "Absolutely and certainly", "100% sure", "Stronger than probably"] },
+                { word: "Suddenly", type: "adverb", hints: ["All at once", "Without warning", "Happening quickly", "Unexpected and abrupt"] },
+                { word: "Carefully", type: "adverb", hints: ["With caution and attention", "Not carelessly", "Paying close attention", "How you handle fragile things"] },
+                { word: "Quickly", type: "adverb", hints: ["In a fast manner", "With speed", "Rapidly and swiftly", "The opposite of slowly"] },
+                { word: "Slowly", type: "adverb", hints: ["In a gradual manner", "Not fast", "Taking time", "How turtles move"] },
+                { word: "Quietly", type: "adverb", hints: ["Without much noise", "Silently or softly", "The opposite of loudly", "In libraries, please speak this way"] },
+                { word: "Loudly", type: "adverb", hints: ["With a lot of noise", "At high volume", "The opposite of quietly", "How rock concerts are"] },
+                { word: "Together", type: "adverb", hints: ["In a group", "With one another", "Not apart", "Working as a team"] },
+                { word: "Alone", type: "adverb/adjective", hints: ["By yourself", "Without others", "Solo and solitary", "The opposite of together"] },
+                { word: "Outside", type: "adverb/noun", hints: ["Not indoors", "In the open air", "Beyond the building", "Where playgrounds are"] },
+                { word: "Inside", type: "adverb/noun", hints: ["Within a space", "Indoors", "Not outside", "Protected from weather"] },
+                { word: "Forward", type: "adverb", hints: ["Toward the front", "Ahead in direction", "Progressing onward", "The opposite of backward"] },
+                { word: "Backward", type: "adverb", hints: ["Toward the rear", "In reverse direction", "The opposite of forward", "How crabs walk"] },
+                { word: "Upward", type: "adverb", hints: ["Toward a higher place", "Moving up", "Ascending direction", "The opposite of downward"] },
+                { word: "Downward", type: "adverb", hints: ["Toward a lower place", "Moving down", "Descending direction", "What gravity pulls"] },
+                { word: "However", type: "adverb", hints: ["On the other hand", "But, nevertheless", "Introducing contrast", "Shows opposite view"] },
+                { word: "Therefore", type: "adverb", hints: ["As a result", "For that reason", "Consequently", "Shows conclusion"] },
+                { word: "Otherwise", type: "adverb", hints: ["If not, or else", "In a different way", "Alternatively", "Shows what happens without action"] },
+                { word: "Meanwhile", type: "adverb", hints: ["At the same time", "During this period", "While that happens", "In the interim"] },
+                { word: "Instead", type: "adverb", hints: ["As an alternative", "Rather than that", "In place of", "Choosing differently"] },
+                { word: "Besides", type: "adverb", hints: ["In addition to", "Furthermore", "As well as", "On top of that"] },
+                { word: "Perhaps", type: "adverb", hints: ["Maybe, possibly", "Could be", "Not certain", "Suggesting uncertainty"] },
+                { word: "Indeed", type: "adverb", hints: ["In truth, actually", "Truly and certainly", "Used for emphasis", "Confirming something"] },
+                { word: "Anyway", type: "adverb", hints: ["In any case", "Regardless of that", "Moving on in conversation", "Nevertheless"] },
+                { word: "Everywhere", type: "adverb", hints: ["In all places", "All around", "Throughout all locations", "The opposite of nowhere"] },
+                { word: "Nowhere", type: "adverb", hints: ["Not anywhere", "In no place", "The opposite of everywhere", "Lost in the middle of ___"] },
+                { word: "Somewhere", type: "adverb", hints: ["In some place", "A location not specified", "Not nowhere, but unknown", "Over the rainbow"] },
+                { word: "Anywhere", type: "adverb", hints: ["In any place", "At any location", "It doesn't matter where", "Any spot will do"] },
+                { word: "Everyone", type: "pronoun", hints: ["All people", "Every person", "Everybody", "The whole group"] },
+                { word: "Someone", type: "pronoun", hints: ["An unspecified person", "A particular individual", "Somebody", "Not a specific name"] },
+                { word: "Anyone", type: "pronoun", hints: ["Any person at all", "It doesn't matter who", "Whoever", "Any individual"] },
+                { word: "Nobody", type: "pronoun", hints: ["Not anyone", "No person", "Not a single individual", "The opposite of everybody"] },
+                { word: "Everything", type: "pronoun", hints: ["All things", "Every single item", "The whole lot", "Nothing left out"] },
+                { word: "Something", type: "pronoun", hints: ["An unspecified thing", "A particular item", "Not nothing", "Some object or idea"] },
+                { word: "Anything", type: "pronoun", hints: ["Any thing at all", "It doesn't matter what", "Whatever", "Any item or concept"] },
+                { word: "Nothing", type: "pronoun", hints: ["Not anything", "Zero, nada", "The opposite of everything", "Empty or absent"] },
+                { word: "Several", type: "determiner", hints: ["More than two but not many", "A few, some", "Not just one or two", "Not exactly counted"] },
+                { word: "Various", type: "adjective", hints: ["Different kinds", "Many types", "Diverse and assorted", "Not all the same"] },
+                { word: "Certain", type: "adjective", hints: ["Particular but not specified", "Sure and definite", "Specific ones", "Known but not named"] },
+                { word: "Several", type: "determiner", hints: ["More than a couple", "A handful of", "Some amount", "Not many but more than two"] },
+                { word: "Entire", type: "adjective", hints: ["Whole and complete", "All of it", "Total and full", "Nothing left out"] },
+                { word: "Whole", type: "adjective", hints: ["Complete and entire", "Not broken or partial", "All together as one", "The ___ truth"] },
+                { word: "Single", type: "adjective", hints: ["Only one", "Not multiple", "Individual and alone", "Not married or paired"] },
+                { word: "Double", type: "adjective", hints: ["Two times", "Twice as much", "A pair or duo", "The opposite of single"] },
+                { word: "Multiple", type: "adjective", hints: ["Many, several", "More than one", "Various instances", "The opposite of single"] }
+            ],
+            hard: [
+                { word: "Ambiguous", type: "adjective", hints: ["Having more than one meaning", "Unclear or vague", "Can be interpreted differently", "Not straightforward or definite"] },
+                { word: "Benevolent", type: "adjective", hints: ["Kind and well-meaning", "Showing goodwill", "Generous and charitable", "The opposite of malevolent"] },
+                { word: "Meticulous", type: "adjective", hints: ["Extremely careful and precise", "Paying attention to details", "Thorough and accurate", "Perfectionists are this way"] },
+                { word: "Ephemeral", type: "adjective", hints: ["Lasting for a very short time", "Temporary and fleeting", "Not permanent", "Like morning dew or cherry blossoms"] },
+                { word: "Pragmatic", type: "adjective", hints: ["Practical rather than idealistic", "Based on reality and facts", "Sensible and realistic approach", "The opposite of theoretical"] },
+                { word: "Resilient", type: "adjective", hints: ["Able to recover from difficulties", "Bouncing back from setbacks", "Tough and adaptable", "What you need after failure"] },
+                { word: "Eloquent", type: "adjective", hints: ["Speaking or writing well", "Fluent and persuasive", "Using language effectively", "Great speakers are this"] },
+                { word: "Inevitable", type: "adjective", hints: ["Certain to happen", "Unavoidable and inescapable", "Cannot be prevented", "Death and taxes are this"] },
+                { word: "Subtle", type: "adjective", hints: ["Not obvious or direct", "Delicate and understated", "Difficult to detect", "The opposite of blatant"] },
+                { word: "Abstract", type: "adjective", hints: ["Theoretical rather than concrete", "Not physical or tangible", "Conceptual and intangible", "The opposite of concrete"] },
+                { word: "Arbitrary", type: "adjective", hints: ["Based on random choice", "Not following a pattern", "Without reason or system", "Capricious and unpredictable"] },
+                { word: "Candid", type: "adjective", hints: ["Honest and straightforward", "Speaking openly and directly", "Not hiding feelings", "Truthful and frank"] },
+                { word: "Diligent", type: "adjective", hints: ["Hard-working and careful", "Showing effort and dedication", "Persistent and attentive", "Opposite of lazy"] },
+                { word: "Exquisite", type: "adjective", hints: ["Extremely beautiful and delicate", "Exceptionally fine quality", "Refined and elegant", "Perfect in every detail"] },
+                { word: "Feasible", type: "adjective", hints: ["Possible to do or achieve", "Practical and realistic", "Can be accomplished", "The opposite of impossible"] },
+                { word: "Genuine", type: "adjective", hints: ["Real and authentic", "Not fake or copied", "Sincere and honest", "The opposite of counterfeit"] },
+                { word: "Hostile", type: "adjective", hints: ["Unfriendly and aggressive", "Showing opposition", "The opposite of friendly", "Antagonistic behavior"] },
+                { word: "Immense", type: "adjective", hints: ["Extremely large", "Huge and vast", "Enormous in size", "Greater than just big"] },
+                { word: "Jovial", type: "adjective", hints: ["Cheerful and friendly", "Full of good humor", "Happy and jolly", "Santa Claus is described this way"] },
+                { word: "Keen", type: "adjective", hints: ["Eager and enthusiastic", "Sharp and intense", "Very interested in", "Having strong desire"] },
+                { word: "Lucid", type: "adjective", hints: ["Clear and easy to understand", "Expressed clearly", "Thinking clearly", "Not confused or vague"] },
+                { word: "Mundane", type: "adjective", hints: ["Ordinary and dull", "Lacking interest", "Everyday and routine", "The opposite of extraordinary"] },
+                { word: "Naive", type: "adjective", hints: ["Lacking experience", "Innocent and trusting", "Not worldly-wise", "Believes things too easily"] },
+                { word: "Obsolete", type: "adjective", hints: ["No longer in use", "Out of date", "Replaced by newer things", "Like cassette tapes today"] },
+                { word: "Profound", type: "adjective", hints: ["Very deep and intense", "Having great meaning", "Not superficial", "Philosophers are this"] },
+                { word: "Reluctant", type: "adjective", hints: ["Unwilling and hesitant", "Not eager to do something", "Showing resistance", "The opposite of willing"] },
+                { word: "Skeptical", type: "adjective", hints: ["Doubting or questioning", "Not easily convinced", "Critical and suspicious", "The opposite of gullible"] },
+                { word: "Tenacious", type: "adjective", hints: ["Persistent and determined", "Not giving up easily", "Holding on firmly", "Stubborn in a good way"] },
+                { word: "Unanimous", type: "adjective", hints: ["Everyone agrees", "Complete agreement", "No disagreement at all", "All voting the same way"] },
+                { word: "Versatile", type: "adjective", hints: ["Adaptable to many uses", "Having many skills", "Flexible and multifaceted", "A Swiss Army knife is this"] },
+                { word: "Whimsical", type: "adjective", hints: ["Playfully fanciful", "Imaginative and quirky", "Unpredictable in an amusing way", "Like Alice in Wonderland"] },
+                { word: "Zealous", type: "adjective", hints: ["Enthusiastically devoted", "Passionately dedicated", "Fervent and eager", "Extremely committed"] },
+                { word: "Accomplish", type: "verb", hints: ["To complete successfully", "Achieving a goal", "Finishing what you started", "What hard work leads to"] },
+                { word: "Acknowledge", type: "verb", hints: ["To recognize or admit", "Accepting as true", "Showing you've noticed", "Giving credit where due"] },
+                { word: "Advocate", type: "verb/noun", hints: ["To support or recommend", "A person who supports a cause", "Speaking in favor of", "Defending or promoting"] },
+                { word: "Alleviate", type: "verb", hints: ["To make less severe", "Reducing pain or problems", "Easing or relieving", "Medicine does this to symptoms"] },
+                { word: "Anticipate", type: "verb", hints: ["To expect or predict", "Looking forward to", "Preparing for what's coming", "Foreseeing the future"] },
+                { word: "Articulate", type: "verb/adjective", hints: ["To express clearly", "Speaking fluently", "Well-spoken and clear", "Putting thoughts into words"] },
+                { word: "Authenticate", type: "verb", hints: ["To prove something is real", "Verifying as genuine", "Confirming validity", "What experts do with art"] },
+                { word: "Captivate", type: "verb", hints: ["To attract and hold attention", "Fascinating completely", "Charming or mesmerizing", "What great movies do"] },
+                { word: "Collaborate", type: "verb", hints: ["To work together", "Joint effort with others", "Cooperating on a project", "Teamwork in action"] },
+                { word: "Commemorate", type: "verb", hints: ["To honor or remember", "Marking a special event", "Celebrating an occasion", "Memorials do this"] },
+                { word: "Compensate", type: "verb", hints: ["To make up for something", "Paying or reimbursing", "Balancing out a loss", "What insurance does"] },
+                { word: "Comprehend", type: "verb", hints: ["To understand fully", "Grasping the meaning", "Not just hearing but knowing", "What students should do with lessons"] },
+                { word: "Compromise", type: "verb/noun", hints: ["To reach an agreement", "Both sides give up something", "Meeting in the middle", "Necessary in negotiations"] },
+                { word: "Conceal", type: "verb", hints: ["To hide or keep secret", "Not revealing", "Covering up", "The opposite of revealing"] },
+                { word: "Contemplate", type: "verb", hints: ["To think deeply about", "Considering carefully", "Reflecting and pondering", "What philosophers do"] },
+                { word: "Contradict", type: "verb", hints: ["To say the opposite", "Denying or opposing", "Stating something contrary", "What liars do to themselves"] },
+                { word: "Convince", type: "verb", hints: ["To persuade someone", "Making someone believe", "Winning someone over", "What good arguments do"] },
+                { word: "Cultivate", type: "verb", hints: ["To develop or improve", "Growing and nurturing", "What farmers do with crops", "Building something over time"] },
+                { word: "Deceive", type: "verb", hints: ["To mislead or trick", "Lying or cheating", "Making someone believe falsely", "What con artists do"] },
+                { word: "Dedicate", type: "verb", hints: ["To commit fully to something", "Devoting time and effort", "Setting aside for a purpose", "What authors do with their books"] },
+                { word: "Deliberate", type: "verb/adjective", hints: ["To think carefully about", "Intentional and purposeful", "Not accidental", "What juries do"] },
+                { word: "Demonstrate", type: "verb", hints: ["To show or prove", "Making clear by example", "Illustrating how something works", "What teachers do"] },
+                { word: "Depict", type: "verb", hints: ["To represent or show", "Portraying in art or words", "Describing visually", "What paintings do"] },
+                { word: "Deteriorate", type: "verb", hints: ["To become worse", "Declining in quality", "Breaking down over time", "What neglected things do"] },
+                { word: "Devise", type: "verb", hints: ["To plan or invent", "Creating a strategy", "Coming up with an idea", "Designing something new"] },
+                { word: "Diagnose", type: "verb", hints: ["To identify a problem", "Determining what's wrong", "What doctors do with illnesses", "Finding the root cause"] },
+                { word: "Diminish", type: "verb", hints: ["To become or make smaller", "Reducing in size or importance", "Lessening or decreasing", "The opposite of increasing"] },
+                { word: "Discourage", type: "verb", hints: ["To dissuade or deter", "Making someone lose confidence", "The opposite of encouraging", "Taking away motivation"] },
+                { word: "Distinguish", type: "verb", hints: ["To recognize differences", "Setting apart from others", "Identifying unique features", "What makes you stand out"] },
+                { word: "Dominate", type: "verb", hints: ["To control or rule over", "Having power over", "Being the strongest", "What champions do"] },
+                { word: "Elaborate", type: "verb/adjective", hints: ["To explain in detail", "Adding more information", "Complex and detailed", "The opposite of simple"] },
+                { word: "Eliminate", type: "verb", hints: ["To remove completely", "Getting rid of", "Excluding or deleting", "What you do to wrong answers"] },
+                { word: "Emphasize", type: "verb", hints: ["To stress importance", "Highlighting something", "Drawing attention to", "What bold text does"] },
+                { word: "Encompass", type: "verb", hints: ["To include or contain", "Surrounding completely", "Covering all aspects", "The whole thing"] },
+                { word: "Enhance", type: "verb", hints: ["To improve or increase", "Making better", "Adding value to", "Upgrading quality"] },
+                { word: "Enumerate", type: "verb", hints: ["To list one by one", "Counting and naming", "Specifying each item", "What you do with numbers"] },
+                { word: "Equivalent", type: "adjective/noun", hints: ["Equal in value or meaning", "The same as", "Corresponding to", "2+2 is ___ to 4"] },
+                { word: "Establish", type: "verb", hints: ["To set up or create", "Founding or starting", "Making official", "What businesses do at the beginning"] },
+                { word: "Evaluate", type: "verb", hints: ["To assess or judge", "Determining value or quality", "Analyzing carefully", "What critics do"] },
+                { word: "Exaggerate", type: "verb", hints: ["To overstate or magnify", "Making bigger than reality", "Stretching the truth", "What fishermen do with catch size"] },
+                { word: "Exclude", type: "verb", hints: ["To leave out", "Not including", "Barring from entry", "The opposite of including"] },
+                { word: "Exemplify", type: "verb", hints: ["To be a typical example", "Illustrating perfectly", "Representing ideally", "What role models do"] },
+                { word: "Facilitate", type: "verb", hints: ["To make easier", "Helping things happen", "Assisting a process", "What good leaders do"] },
+                { word: "Fluctuate", type: "verb", hints: ["To vary irregularly", "Going up and down", "Changing continuously", "What stock prices do"] },
+                { word: "Formulate", type: "verb", hints: ["To create or devise", "Developing a plan", "Putting into a formula", "What scientists do with theories"] },
+                { word: "Frustrate", type: "verb", hints: ["To cause annoyance", "Blocking someone's efforts", "Making things difficult", "What traffic jams do"] },
+                { word: "Generate", type: "verb", hints: ["To produce or create", "Bringing into existence", "Making or causing", "What power plants do with electricity"] },
+                { word: "Guarantee", type: "verb/noun", hints: ["To promise or assure", "A formal assurance", "Ensuring something will happen", "What warranties provide"] },
+                { word: "Hesitate", type: "verb", hints: ["To pause before acting", "Being uncertain or reluctant", "Not acting immediately", "Showing doubt or indecision"] },
+                { word: "Illuminate", type: "verb", hints: ["To light up", "Making clear or bright", "Shedding light on", "What lamps do"] },
+                { word: "Illustrate", type: "verb", hints: ["To explain with examples", "Drawing pictures for", "Making clear through images", "What children's books have"] },
+                { word: "Imitate", type: "verb", hints: ["To copy or mimic", "Following someone's example", "Reproducing actions", "What parrots do with speech"] },
+                { word: "Implement", type: "verb", hints: ["To put into action", "Executing a plan", "Making something happen", "What managers do with strategies"] },
+                { word: "Imply", type: "verb", hints: ["To suggest without saying directly", "Hinting at something", "Not stating explicitly", "Reading between the lines"] },
+                { word: "Improvise", type: "verb", hints: ["To create spontaneously", "Making up as you go", "Without preparation", "What jazz musicians do"] },
+                { word: "Incorporate", type: "verb", hints: ["To include as part of", "Combining into a whole", "Adding to the mix", "What chefs do with ingredients"] },
+                { word: "Indicate", type: "verb", hints: ["To point out or show", "Suggesting or signaling", "Making known", "What arrows do"] },
+                { word: "Influence", type: "verb/noun", hints: ["To affect or change", "Having an effect on", "Power to sway", "What celebrities have"] },
+                { word: "Inhibit", type: "verb", hints: ["To hold back or restrain", "Preventing from happening", "Slowing down progress", "The opposite of encouraging"] },
+                { word: "Initiate", type: "verb", hints: ["To begin or start", "Setting in motion", "Taking the first step", "What pioneers do"] },
+                { word: "Innovate", type: "verb", hints: ["To introduce something new", "Creating fresh ideas", "Revolutionary thinking", "What inventors do"] },
+                { word: "Integrate", type: "verb", hints: ["To combine into a whole", "Bringing together", "Unifying separate parts", "The opposite of segregating"] },
+                { word: "Interpret", type: "verb", hints: ["To explain the meaning", "Understanding in a certain way", "Translating or decoding", "What actors do with scripts"] },
+                { word: "Intimidate", type: "verb", hints: ["To frighten or threaten", "Making someone feel scared", "Using fear to control", "What bullies do"] },
+                { word: "Investigate", type: "verb", hints: ["To examine carefully", "Researching and exploring", "Looking for facts", "What detectives do"] },
+                { word: "Justify", type: "verb", hints: ["To prove right or reasonable", "Giving reasons for", "Defending an action", "Explaining why you did something"] },
+                { word: "Maintain", type: "verb", hints: ["To keep in good condition", "Continuing at same level", "Preserving or sustaining", "What you do to your car"] },
+                { word: "Manipulate", type: "verb", hints: ["To control cleverly", "Handling skillfully", "Influencing unfairly", "What puppeteers do"] },
+                { word: "Mediate", type: "verb", hints: ["To help resolve conflict", "Acting as a go-between", "Facilitating agreement", "What diplomats do"] },
+                { word: "Minimize", type: "verb", hints: ["To reduce to smallest", "Making less important", "The opposite of maximizing", "Downplaying significance"] },
+                { word: "Motivate", type: "verb", hints: ["To inspire action", "Giving reasons to do", "Encouraging and driving", "What coaches do"] },
+                { word: "Navigate", type: "verb", hints: ["To find the way", "Steering or directing", "What sailors and drivers do", "Using maps or GPS"] },
+                { word: "Negotiate", type: "verb", hints: ["To discuss and reach agreement", "Bargaining and compromising", "What happens in business deals", "Trying to get a good deal"] },
+                { word: "Neutralize", type: "verb", hints: ["To make ineffective", "Canceling out", "Removing threat or power", "What you do to acids with bases"] },
+                { word: "Obstruct", type: "verb", hints: ["To block or hinder", "Getting in the way", "Preventing progress", "What roadblocks do"] },
+                { word: "Optimize", type: "verb", hints: ["To make the best of", "Improving efficiency", "Getting maximum benefit", "What engineers do with systems"] },
+                { word: "Organize", type: "verb", hints: ["To arrange systematically", "Putting in order", "Planning and coordinating", "What you do with messy rooms"] },
+                { word: "Overwhelm", type: "verb", hints: ["To defeat completely", "Too much to handle", "Overpowering someone", "When tasks pile up"] },
+                { word: "Participate", type: "verb", hints: ["To take part in", "Joining in an activity", "Being involved", "What you do in sports"] },
+                { word: "Perceive", type: "verb", hints: ["To become aware of", "Noticing or observing", "Understanding through senses", "How you see the world"] },
+                { word: "Persevere", type: "verb", hints: ["To continue despite difficulty", "Not giving up", "Persistent effort", "What winners do"] },
+                { word: "Persuade", type: "verb", hints: ["To convince someone", "Talking into doing something", "Using arguments to influence", "What salespeople try to do"] },
+                { word: "Postpone", type: "verb", hints: ["To delay until later", "Putting off", "Rescheduling for another time", "The opposite of advancing"] },
+                { word: "Predict", type: "verb", hints: ["To forecast the future", "Saying what will happen", "Making an educated guess", "What weather forecasters do"] },
+                { word: "Preserve", type: "verb", hints: ["To keep safe or intact", "Maintaining original condition", "Protecting from decay", "What museums do with artifacts"] },
+                { word: "Prioritize", type: "verb", hints: ["To arrange by importance", "Deciding what comes first", "Putting in order of value", "What busy people must do"] },
+                { word: "Procrastinate", type: "verb", hints: ["To delay unnecessarily", "Putting things off", "Not doing until last minute", "The enemy of productivity"] },
+                { word: "Prohibit", type: "verb", hints: ["To forbid or ban", "Making illegal", "Not allowing", "What laws do with certain actions"] },
+                { word: "Promote", type: "verb", hints: ["To advance or encourage", "Supporting or advertising", "Moving up in rank", "What marketing does"] },
+                { word: "Propose", type: "verb", hints: ["To suggest or put forward", "Offering an idea", "What you do before marriage", "Making a recommendation"] },
+                { word: "Pursue", type: "verb", hints: ["To follow or chase", "Going after something", "Seeking to achieve", "What you do with dreams"] },
+                { word: "Reconcile", type: "verb", hints: ["To restore friendly relations", "Making peace", "Resolving differences", "What feuding parties should do"] },
+                { word: "Refine", type: "verb", hints: ["To improve by removing impurities", "Making more elegant", "Polishing and perfecting", "What happens to crude oil"] },
+                { word: "Regulate", type: "verb", hints: ["To control or supervise", "Setting rules for", "Maintaining standards", "What governments do"] },
+                { word: "Reinforce", type: "verb", hints: ["To strengthen or support", "Making stronger", "Adding extra support", "What steel does to concrete"] },
+                { word: "Reject", type: "verb", hints: ["To refuse to accept", "Dismissing or declining", "Saying no to", "The opposite of accepting"] },
+                { word: "Relieve", type: "verb", hints: ["To ease or reduce", "Taking away pain", "Making less burdensome", "What medicine does to symptoms"] },
+                { word: "Resemble", type: "verb", hints: ["To look like", "Having similarity to", "Bearing likeness", "What twins do to each other"] },
+                { word: "Resolve", type: "verb", hints: ["To find a solution", "Deciding firmly", "Settling a problem", "Making up your mind"] },
+                { word: "Respond", type: "verb", hints: ["To reply or react", "Answering back", "Reacting to stimulus", "What you do to questions"] },
+                { word: "Restore", type: "verb", hints: ["To bring back to original", "Repairing and renewing", "Giving back", "What art conservators do"] },
+                { word: "Restrict", type: "verb", hints: ["To limit or control", "Putting boundaries on", "Not allowing freely", "What diet does to eating"] },
+                { word: "Retain", type: "verb", hints: ["To keep or hold onto", "Not letting go", "Maintaining possession", "What good memory does"] },
+                { word: "Reveal", type: "verb", hints: ["To make known", "Showing what was hidden", "Disclosing secrets", "The opposite of concealing"] },
+                { word: "Revise", type: "verb", hints: ["To review and change", "Editing and improving", "Making corrections", "What writers do to drafts"] },
+                { word: "Sacrifice", type: "verb/noun", hints: ["To give up something valued", "Surrendering for a cause", "What heroes make", "Putting others first"] },
+                { word: "Simulate", type: "verb", hints: ["To imitate or replicate", "Creating a model of", "Pretending to be real", "What video games do"] },
+                { word: "Specialize", type: "verb", hints: ["To focus on specific area", "Becoming expert in", "Concentrating efforts", "What doctors do in medicine"] },
+                { word: "Stimulate", type: "verb", hints: ["To encourage or arouse", "Making more active", "Exciting interest", "What coffee does to alertness"] },
+                { word: "Substitute", type: "verb/noun", hints: ["To replace with another", "A replacement for something", "Standing in for", "What teachers have when absent"] },
+                { word: "Summarize", type: "verb", hints: ["To give main points", "Condensing information", "Brief overview", "What book reviews do"] },
+                { word: "Supervise", type: "verb", hints: ["To oversee and direct", "Watching over work", "Managing others", "What bosses do"] },
+                { word: "Suppress", type: "verb", hints: ["To hold back or restrain", "Preventing from being known", "Subduing forcefully", "What you do with emotions sometimes"] },
+                { word: "Sustain", type: "verb", hints: ["To maintain or support", "Keeping going over time", "Providing for needs", "What food does for life"] },
+                { word: "Symbolize", type: "verb", hints: ["To represent or stand for", "Being a symbol of", "Embodying an idea", "What doves do for peace"] },
+                { word: "Synthesize", type: "verb", hints: ["To combine into a whole", "Creating from parts", "Merging different elements", "What chemists do with compounds"] },
+                { word: "Terminate", type: "verb", hints: ["To bring to an end", "Stopping or finishing", "Firing someone", "The opposite of beginning"] },
+                { word: "Tolerate", type: "verb", hints: ["To allow without protest", "Putting up with", "Accepting something unpleasant", "What you do with annoying things"] },
+                { word: "Transform", type: "verb", hints: ["To change completely", "Making into something different", "Metamorphosis", "What caterpillars do"] },
+                { word: "Transmit", type: "verb", hints: ["To send or pass on", "Broadcasting information", "Transferring from one to another", "What radio does with signals"] },
+                { word: "Underestimate", type: "verb", hints: ["To think less than actual", "Judging too low", "Not giving enough credit", "The opposite of overestimating"] },
+                { word: "Undertake", type: "verb", hints: ["To begin a task", "Taking on responsibility", "Committing to do", "What you do with projects"] },
+                { word: "Utilize", type: "verb", hints: ["To make use of", "Putting to practical use", "Employing effectively", "A fancy word for 'use'"] },
+                { word: "Validate", type: "verb", hints: ["To confirm as true", "Proving correctness", "Making official", "What stamps do to documents"] },
+                { word: "Visualize", type: "verb", hints: ["To picture in your mind", "Imagining mentally", "Creating mental images", "What you do before achieving goals"] },
+                { word: "Withdraw", type: "verb", hints: ["To take back or remove", "Pulling away from", "Taking money from bank", "The opposite of depositing"] }
+            ]
+        };
+
+        // Game state
+        let currentLevel = null;
+        let currentWord = null;
+        let usedWords = [];
+        let round = 1;
+        let score = 0;
+        let timer = null;
+        let timeLeft = 60;
+        let soundEnabled = true;
+
+        // DOM elements
+        const difficultyButtons = document.querySelectorAll('.difficulty-btn');
+        const gameArea = document.getElementById('gameArea');
+        const getWordBtn = document.getElementById('getWordBtn');
+        const wordDisplay = document.getElementById('wordDisplay');
+        const currentWordEl = document.getElementById('currentWord');
+        const wordTypeEl = document.getElementById('wordType');
+        const hintsContainer = document.getElementById('hintsContainer');
+        const hintsList = document.getElementById('hintsList');
+        const timerContainer = document.getElementById('timerContainer');
+        const timerValue = document.getElementById('timerValue');
+        const actionButtons = document.getElementById('actionButtons');
+        const nextBtn = document.getElementById('nextBtn');
+        const stopTimerBtn = document.getElementById('stopTimerBtn');
+        const roundCountEl = document.getElementById('roundCount');
+        const scoreCountEl = document.getElementById('scoreCount');
+        const levelDisplayEl = document.getElementById('levelDisplay');
+        const soundToggle = document.getElementById('soundToggle');
+
+        // Select difficulty level
+        difficultyButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                difficultyButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentLevel = btn.dataset.level;
+                usedWords = [];
+                
+                gameArea.classList.add('active');
+                wordDisplay.classList.remove('show');
+                hintsContainer.classList.remove('show');
+                timerContainer.classList.remove('show');
+                actionButtons.classList.remove('show');
+                
+                levelDisplayEl.textContent = currentLevel.toUpperCase();
+                
+                playSound('click');
+            });
+        });
+
+        // Get random word
+        getWordBtn.addEventListener('click', () => {
+            if (!currentLevel) {
+                alert('Please select a difficulty level first!');
+                return;
+            }
+
+            const levelWords = wordDatabase[currentLevel];
+            const availableWords = levelWords.filter(w => !usedWords.includes(w.word));
+
+            if (availableWords.length === 0) {
+                usedWords = [];
+                alert('You\'ve gone through all words! Starting fresh.');
+            }
+
+            const randomWord = availableWords[Math.floor(Math.random() * availableWords.length)];
+            currentWord = randomWord;
+            usedWords.push(randomWord.word);
+
+            displayWord(randomWord);
+            startTimer();
+            playSound('reveal');
+            createConfetti();
+        });
+
+        // Display word and hints
+        function displayWord(word) {
+            currentWordEl.textContent = word.word;
+            wordTypeEl.textContent = `(${word.type})`;
+            
+            wordDisplay.classList.add('show');
+            
+            setTimeout(() => {
+                hintsList.innerHTML = '';
+                word.hints.forEach((hint, index) => {
+                    const hintDiv = document.createElement('div');
+                    hintDiv.className = 'hint';
+                    hintDiv.innerHTML = `
+                        <span class="hint-icon">${index + 1}</span>
+                        <span class="hint-text">${hint}</span>
+                    `;
+                    hintsList.appendChild(hintDiv);
+                });
+                
+                hintsContainer.classList.add('show');
+                timerContainer.classList.add('show');
+                actionButtons.classList.add('show');
+            }, 300);
+        }
+
+        // Timer functions
+        function startTimer() {
+            stopTimer();
+            timeLeft = 60;
+            timerValue.textContent = timeLeft;
+            timerValue.classList.remove('warning');
+            
+            timer = setInterval(() => {
+                timeLeft--;
+                timerValue.textContent = timeLeft;
+                
+                if (timeLeft <= 10) {
+                    timerValue.classList.add('warning');
+                    if (soundEnabled) {
+                        playSound('tick');
+                    }
+                }
+                
+                if (timeLeft === 0) {
+                    stopTimer();
+                    playSound('timeup');
+                    alert('Time\'s up! Moving to next word.');
+                    nextWord();
+                }
+            }, 1000);
+        }
+
+        function stopTimer() {
+            if (timer) {
+                clearInterval(timer);
+                timer = null;
+            }
+        }
+
+        stopTimerBtn.addEventListener('click', () => {
+            stopTimer();
+            timerValue.classList.remove('warning');
+            playSound('click');
+        });
+
+        // Next word
+        nextBtn.addEventListener('click', () => {
+            stopTimer();
+            round++;
+            score += 10;
+            roundCountEl.textContent = round;
+            scoreCountEl.textContent = score;
+            
+            wordDisplay.classList.remove('show');
+            hintsContainer.classList.remove('show');
+            timerContainer.classList.remove('show');
+            actionButtons.classList.remove('show');
+            
+            playSound('success');
+        });
+
+        // Sound toggle
+        soundToggle.addEventListener('click', () => {
+            soundEnabled = !soundEnabled;
+            soundToggle.textContent = soundEnabled ? '🔊' : '🔇';
+            playSound('click');
+        });
+
+        // Sound effects (using Web Audio API)
+        function playSound(type) {
+            if (!soundEnabled) return;
+            
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            switch(type) {
+                case 'click':
+                    oscillator.frequency.value = 800;
+                    gainNode.gain.value = 0.1;
+                    oscillator.start();
+                    oscillator.stop(audioContext.currentTime + 0.1);
+                    break;
+                case 'reveal':
+                    oscillator.frequency.value = 600;
+                    gainNode.gain.value = 0.15;
+                    oscillator.start();
+                    oscillator.stop(audioContext.currentTime + 0.2);
+                    break;
+                case 'success':
+                    oscillator.frequency.value = 800;
+                    gainNode.gain.value = 0.2;
+                    oscillator.start();
+                    oscillator.stop(audioContext.currentTime + 0.15);
+                    setTimeout(() => {
+                        const osc2 = audioContext.createOscillator();
+                        const gain2 = audioContext.createGain();
+                        osc2.connect(gain2);
+                        gain2.connect(audioContext.destination);
+                        osc2.frequency.value = 1000;
+                        gain2.gain.value = 0.2;
+                        osc2.start();
+                        osc2.stop(audioContext.currentTime + 0.15);
+                    }, 100);
+                    break;
+                case 'tick':
+                    oscillator.frequency.value = 400;
+                    gainNode.gain.value = 0.05;
+                    oscillator.start();
+                    oscillator.stop(audioContext.currentTime + 0.05);
+                    break;
+                case 'timeup':
+                    oscillator.frequency.value = 200;
+                    gainNode.gain.value = 0.3;
+                    oscillator.start();
+                    oscillator.stop(audioContext.currentTime + 0.5);
+                    break;
+            }
+        }
+
+        // Confetti animation
+        function createConfetti() {
+            const colors = ['#FF6B9D', '#4ECDC4', '#FFE66D', '#52C493'];
+            const confettiCount = 50;
+            
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = confetti.style.width;
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, 3000);
+            }
+        }
+
+        // Next word helper
+        function nextWord() {
+            round++;
+            roundCountEl.textContent = round;
+            
+            wordDisplay.classList.remove('show');
+            hintsContainer.classList.remove('show');
+            timerContainer.classList.remove('show');
+            actionButtons.classList.remove('show');
+        }
+    </script>
+</body>
+</html>
